@@ -22,4 +22,6 @@ object Functions {
     def p3(x: Int)(y: Int)(z: Int): Boolean = x <= y && y <= z
 
     def p4(x: Int, y: Int, z: Int): Boolean = x <= y && y <= z
+
+    def compose[I, T, O](f: T => O, g: I => T): I => O = i => f(g(i))
 }

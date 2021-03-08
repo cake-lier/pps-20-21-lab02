@@ -1,6 +1,6 @@
 package lab
 
-import lab.Functions.{negDef, negVal, p1, p2, p3, p4, parityDef, parityVal}
+import lab.Functions._
 import org.junit.jupiter.api.Assertions.{assertEquals, assertFalse, assertTrue}
 import org.junit.jupiter.api.Test
 
@@ -77,5 +77,11 @@ class FunctionsTest {
     @Test
     def testNotCurryingDef(): Unit = {
         testNotCurrying(p4)
+    }
+
+    @Test
+    def testComposition(): Unit = {
+        assertEquals(9, compose[Int, Int, Int](_ - 1, _ * 2)(5))
+        assertEquals("0.5 bar", compose[Int, Double, String](_ + " bar", _ / 2.0)(1))
     }
 }
