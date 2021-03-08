@@ -1,6 +1,6 @@
 package lab
 
-import lab.Shape.{Circle, Rectangle}
+import lab.Shape.{Circle, Rectangle, Square}
 import lab.ShapeUtils.{area, perimeter}
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -21,5 +21,13 @@ class ShapeTest {
         val circle = Circle(circleRadius)
         assertEquals(2 * Math.PI * circleRadius, perimeter(circle))
         assertEquals(Math.PI * Math.pow(circleRadius, 2), area(circle))
+    }
+
+    @Test
+    def testSquare(): Unit = {
+        val squareSide = 2
+        val square = Square(2)
+        assertEquals(squareSide * 4, perimeter(square))
+        assertEquals(Math.pow(squareSide, 2), area(square))
     }
 }
