@@ -13,7 +13,7 @@ class OptionalsTest {
         val odd: Int => Boolean = _ % 2 == 1
         assertEquals(optional, filter(optional, odd))
         val empty = None[Int]()
-        assertEquals(empty, filter[Int](optional, _ % 2 == 0))
+        assertEquals(empty, filter[Int, Int](optional, _ % 2 == 0))
         assertEquals(empty, filter(empty, odd))
     }
 }

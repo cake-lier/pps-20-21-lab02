@@ -5,7 +5,7 @@ object Option {
     case class None[A]() extends Option[A]
     case class Some[A](a: A) extends Option[A]
 
-    def filter[A](option: Option[A], predicate: A => Boolean): Option[A] = option match {
+    def filter[A, B >: A](option: Option[A], predicate: B => Boolean): Option[A] = option match {
         case Some(a) => if (predicate(a)) {
             Some(a)
         } else {
