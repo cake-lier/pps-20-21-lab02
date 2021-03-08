@@ -5,9 +5,25 @@ import org.junit.jupiter.api.Assertions.{assertEquals, assertFalse, assertTrue}
 import org.junit.jupiter.api.Test
 
 class FunctionsTest {
+    val evenNumber: Int = 14
+    val oddNumber: Int = 9
+    val nonEmptyString = "foo"
+    val emptyString = ""
+    val isEmpty: String => Boolean = _ == emptyString
+    val isEven: Int => Boolean = _ % 2 == 0
+    val lowestElement = 1
+    val middleElement = 2
+    val highestElement = 3
+    val f1: Int => Int = _ - 1
+    val g1: Int => Int = _ * 2
+    val x1 = 5
+    val f2: Double => String = _ + " bar"
+    val g2: Int => Double = _ / 2.0
+    val x2 = 1
+
     def testParity(parity: Int => String): Unit = {
-        assertEquals("even", parity(14))
-        assertEquals("odd", parity(9))
+        assertEquals("even", parity(evenNumber))
+        assertEquals("odd", parity(oddNumber))
     }
 
     @Test
@@ -27,7 +43,7 @@ class FunctionsTest {
     }
 
     def testNegString(neg: (String => Boolean) => String => Boolean): Unit = {
-        testNeg[String](_ == "", neg, "foo", "")
+        testNeg(isEmpty, neg, nonEmptyString, emptyString)
     }
 
     @Test
@@ -42,14 +58,14 @@ class FunctionsTest {
 
     @Test
     def testNegDefInt(): Unit = {
-        testNeg[Int](_ % 2 == 0, negDef, 9, 14)
+        testNeg[Int](isEven, negDef, oddNumber, evenNumber)
     }
 
     def testCurrying(predicate: Int => Int => Int => Boolean): Unit = {
-        assertTrue(predicate(1)(2)(3))
-        assertFalse(predicate(2)(1)(3))
-        assertFalse(predicate(1)(3)(2))
-        assertFalse(predicate(3)(2)(1))
+        assertTrue(predicate(lowestElement)(middleElement)(highestElement))
+        assertFalse(predicate(middleElement)(lowestElement)(highestElement))
+        assertFalse(predicate(lowestElement)(highestElement)(middleElement))
+        assertFalse(predicate(highestElement)(middleElement)(lowestElement))
     }
 
     @Test
@@ -63,10 +79,10 @@ class FunctionsTest {
     }
 
     def testNotCurrying(predicate: (Int, Int, Int) => Boolean): Unit = {
-        assertTrue(predicate(1, 2, 3))
-        assertFalse(predicate(2, 1, 3))
-        assertFalse(predicate(1, 3, 2))
-        assertFalse(predicate(3, 2, 1))
+        assertTrue(predicate(lowestElement, middleElement, highestElement))
+        assertFalse(predicate(middleElement, lowestElement, highestElement))
+        assertFalse(predicate(lowestElement, highestElement, middleElement))
+        assertFalse(predicate(highestElement, middleElement, lowestElement))
     }
 
     @Test
@@ -81,7 +97,7 @@ class FunctionsTest {
 
     @Test
     def testComposition(): Unit = {
-        assertEquals(9, compose[Int, Int, Int](_ - 1, _ * 2)(5))
-        assertEquals("0.5 bar", compose[Int, Double, String](_ + " bar", _ / 2.0)(1))
+        assertEquals(f1(g1(x1)), compose(f1, g1)(x1))
+        assertEquals(f2(g2(x2)), compose(f2, g2)(x2))
     }
 }
