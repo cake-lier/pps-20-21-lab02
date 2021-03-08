@@ -7,20 +7,20 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class OptionalsTest {
+    val optional: Option[Int] = Some(5)
+    val empty: Option[Int] = None()
+    val greaterThanTwo: Int => Boolean = _ > 2
+
     @Test
     def testFilter(): Unit = {
-        val optional = Some(5)
-        val odd: Int => Boolean = _ % 2 == 1
-        assertEquals(optional, filter(optional, odd))
-        val empty = None[Int]()
-        assertEquals(empty, filter[Int, Int](optional, _ % 2 == 0))
-        assertEquals(empty, filter(empty, odd))
+        assertEquals(optional, filter(optional)(greaterThanTwo))
+        assertEquals(empty, filter(optional)(_ > 8))
+        assertEquals(empty, filter(empty)(greaterThanTwo))
     }
 
     @Test
     def testMap(): Unit = {
-        val toString: Int => String = _ + ""
-        assertEquals(Some("5"), map(Some(5), toString))
-        assertEquals(None(), map(None(), toString))
+        assertEquals(Some(true), map(optional)(greaterThanTwo))
+        assertEquals(empty, map(empty)(greaterThanTwo))
     }
 }
