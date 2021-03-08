@@ -5,39 +5,43 @@ import org.junit.jupiter.api.Assertions.{assertEquals, assertFalse, assertTrue}
 import org.junit.jupiter.api.Test
 
 class FunctionsTest {
+    def testParity(parity: Int => String): Unit = {
+        assertEquals("even", parity(14))
+        assertEquals("odd", parity(9))
+    }
+
     @Test
     def testParityVal(): Unit = {
-        assertEquals("even", parityVal(14))
-        assertEquals("odd", parityVal(9))
+        testParity(parityVal)
     }
 
     @Test
     def testParityDef(): Unit = {
-        assertEquals("even", parityDef(14))
-        assertEquals("odd", parityDef(9))
+        testParity(parityDef)
+    }
+
+    def testNeg[A](predicate: A => Boolean, neg: (A => Boolean) => A => Boolean, positiveMatch: A, negativeMatch: A): Unit = {
+        val negated = neg(predicate)
+        assertTrue(negated(positiveMatch))
+        assertFalse(negated(negativeMatch))
+    }
+
+    def testNegString(neg: (String => Boolean) => String => Boolean): Unit = {
+        testNeg[String](_ == "", neg, "foo", "")
     }
 
     @Test
-    def testNegVal(): Unit = {
-        val empty: String => Boolean = _ == ""
-        val notEmpty = negVal(empty)
-        assertTrue(notEmpty("foo"))
-        assertFalse(notEmpty(""))
+    def testNegValString(): Unit = {
+        testNegString(negVal)
     }
 
     @Test
-    def testNegDef(): Unit = {
-        val empty: String => Boolean = _ == ""
-        val notEmpty = negDef(empty)
-        assertTrue(notEmpty("foo"))
-        assertFalse(notEmpty(""))
+    def testNegDefString(): Unit = {
+        testNegString(negDef)
     }
 
     @Test
     def testNegDefInt(): Unit = {
-        val even: Int => Boolean = _ % 2 == 0
-        val odd = negDef(even)
-        assertTrue(odd(9))
-        assertFalse(odd(14))
+        testNeg[Int](_ % 2 == 0, negDef, 9, 14)
     }
 }
