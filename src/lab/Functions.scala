@@ -10,4 +10,8 @@ object Functions {
         case 0 => "even"
         case 1 => "odd"
     }
+
+    val negVal: (String => Boolean) => String => Boolean = f => i => !f(i)
+
+    def negDef[A](f: A => Boolean): A => Boolean = i => !f(i)
 }
