@@ -1,7 +1,6 @@
 package lab
 
-import lab.Shape.{Circle, Rectangle, Square}
-import lab.ShapeUtils.{area, perimeter}
+import lab.Shape.{Circle, Rectangle, Square, area, perimeter}
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
