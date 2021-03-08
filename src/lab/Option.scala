@@ -14,7 +14,10 @@ object Option {
         case _ => None()
     }
 
-    def map[A, B](option: Option[A], function: A => B): Option[B] = ???
+    def map[A, B](option: Option[A], function: A => B): Option[B] = option match {
+        case Some(a) => Some(function(a))
+        case _ => None()
+    }
 
     def map2[A, B, C](option1: Option[A], option2: Option[B], bifunction: (A, B) => C): Option[C] = ???
 }
