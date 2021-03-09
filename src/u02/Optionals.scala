@@ -4,23 +4,32 @@ object Optionals extends App {
 
   sealed trait Option[A] // An Optional data type
   object Option {
-    case class None[A]() extends Option[A]
-    case class Some[A](a: A) extends Option[A]
+      case class None[A]() extends Option[A]
+      case class Some[A](a: A) extends Option[A]
 
-    def isEmpty[A](opt: Option[A]): Boolean = opt match {
-      case None() => true
-      case _ => false
-    }
+      def isEmpty[A](opt: Option[A]): Boolean = opt match {
+          case None() => true
+          case _ => false
+      }
 
-    def getOrElse[A, B >: A](opt: Option[A], orElse: B): B = opt match {
-      case Some(a) => a
-      case _ => orElse
-    }
+      def getOrElse[A, B >: A](opt: Option[A], orElse: B): B = opt match {
+          case Some(a) => a
+          case _ => orElse
+      }
 
-    def flatMap[A,B](opt: Option[A])(f:A => Option[B]): Option[B] = opt match {
-      case Some(a) => f(a)
-      case _ => None()
-    }
+      def flatMap[A,B](opt: Option[A])(f:A => Option[B]): Option[B] = opt match {
+          case Some(a) => f(a)
+          case _ => None()
+      }
+
+      def apply[A](option: Option[A])(unaryOperator: A => A): Option[A] = option match {
+          case Some(a) => Some(unaryOperator(a))
+          case _ => None()
+      }
+
+      def double(option: Option[Int]): Option[Int] = apply(option)(i => i * 2)
+
+      def invert(option: Option[Boolean]): Option[Boolean] = apply(option)(b => !b)
   }
 
   import Option._
@@ -33,4 +42,10 @@ object Optionals extends App {
   println(flatMap(s1)(i => Some(i+1))) // Some(2)
   println(flatMap(s1)(i => flatMap(s2)(j => Some(i+j)))) // Some(3)
   println(flatMap(s1)(i => flatMap(s3)(j => Some(i+j)))) // None
+
+  println(double(s2)) //Some(4)
+  println(double(Some(0)))  //Some(0)
+  println(double(None()))   //None()
+  println(invert(Some(true)))   //Some(false)
+  println(invert(None()))   //None()
 }
